@@ -1,0 +1,130 @@
+basePath: /
+definitions:
+  v1.CreateDepositRequest:
+    properties:
+      amount:
+        type: integer
+    type: object
+  v1.CreateTransferRequest:
+    properties:
+      amount:
+        type: integer
+      to:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API for managing ledger accounts
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Ledger API
+  version: "1.0"
+paths:
+  /api/v1/account/{account}/balance:
+    get:
+      consumes:
+      - application/json
+      description: Get the balance of the specified account
+      parameters:
+      - description: Account ID
+        in: path
+        name: account
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Balance retrieved successfully
+        "500":
+          description: Internal Server Error
+      summary: Get account balance
+      tags:
+      - accounts
+  /api/v1/account/{account}/deposit:
+    post:
+      consumes:
+      - application/json
+      description: Create a deposit for the specified account
+      parameters:
+      - description: Account ID
+        in: path
+        name: account
+        required: true
+        type: string
+      - description: Deposit details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateDepositRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Deposit created successfully
+        "400":
+          description: Invalid request payload
+        "500":
+          description: Internal Server Error
+      summary: Create a deposit
+      tags:
+      - accounts
+  /api/v1/account/{account}/transfers:
+    get:
+      consumes:
+      - application/json
+      description: Get the transfer history of the specified account
+      parameters:
+      - description: Account ID
+        in: path
+        name: account
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Transfers history retrieved successfully
+        "500":
+          description: Internal Server Error
+      summary: Get transfers history
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: Create a transfer from the specified account
+      parameters:
+      - description: Account ID
+        in: path
+        name: account
+        required: true
+        type: string
+      - description: Transfer details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateTransferRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Transfer created successfully
+        "400":
+          description: Invalid request payload
+        "402":
+          description: Insufficient funds
+        "500":
+          description: Internal Server Error
+      summary: Create a transfer
+      tags:
+      - accounts
+swagger: "2.0"
